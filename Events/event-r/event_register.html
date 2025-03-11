@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FestX - Event Registration</title>
+    <link rel="icon" type="image/svg" href="/asset/2.svg">
+    <link rel="stylesheet" href="event-registration.css">
+</head>
+<body>
+    <div class="tech-overlay"></div>
+    <div class="register-container">
+        <h2>Event Registration</h2>
+        <input type="text" id="name" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <select id="event" required>
+            <option value="" disabled selected>Loading events...</option>
+        </select>
+        <button id="registerBtn">Register & Pay</button>
+        <p id="status"></p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
+    <script src="event-registration.js"></script>
+</body>
+</html>

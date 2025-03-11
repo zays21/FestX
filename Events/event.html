@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="event.css">
+    <title>Document</title>
+    <link rel="icon" type="image/svg" href="/asset/2.svg">
+    <style>* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #000000;
+        color: #333;
+      }
+      
+      .container {
+        max-width: 800px;
+        margin:auto;
+        padding: 20px;
+
+      }
+      
+     
+      
+      
+      /* Event Cards Section */
+      .event-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);;
+        gap: 100px;
+        margin: 20px auto;
+        max-width: 800px;
+      }
+      
+      .event-card {
+        background: rgb(0, 0, 0);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgb(6, 1, 255);
+        transition: all 0.3s ease;
+      
+      }
+      .event-card1 {
+      
+        background: rgb(0, 0, 0);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgb(6, 1, 255);
+        transition: all 0.3s ease;
+      
+      }
+      
+      .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+      
+      .event-card img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+      }
+      
+      .event-details {
+        padding: 15px;
+        text-align: left;
+      }
+      
+      .event-details h2 {
+        font-size: 1.4em;
+        margin: 10px 0;
+        color: #6200ea;
+      }
+      
+      .event-details p {
+        font-size: 0.9em;
+        color: #666;
+      }
+      
+      .btn {
+        display: block;
+        background-color: #6200ea;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+        margin: 10px auto 0;
+        transition: background-color 0.3s ease;
+      }
+      
+      .btn:hover {
+        background-color: #3700b3;
+      }
+    
+    
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.8); /* Blackish transparency */
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+      }
+  
+      .modal.active {
+        display: flex; /* Show modal when active */
+      }
+      .modal-content img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+      }
+      .event-card1:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+      .modal-content {
+        background: #1e1e1e;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 700px;
+        width: 90%;
+        color: white;
+      }
+  
+      .modal .event-list {
+       
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2 columns per row */
+        gap: 20px; /* Space between cards */
+        margin: 20px auto;
+        max-width: 800px; /* Optional: Adjust as needed */
+      }
+  
+      .close-btn {
+        display: block;
+        text-align: center;
+        margin: 20px auto 0;
+        padding: 8px 20px;
+        background-color: #6200ea;
+        border: none;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.3s ease;
+      }
+  
+      .close-btn:hover {
+        background-color: #3700b3;
+      }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="1.png" alt="FestX Logo" class="logo-icon">
+               
+            </a>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links">
+                <a href="/clubs">Clubs</a>
+                <a href="/events.html">Events</a>
+                <a href="/quizzes">Quizzes</a>
+            </div>
+        </div>
+    </nav>
+
+
+    <main class="event-list container">
+        <!-- Event Cards -->
+        <div class="event-card" onclick="openModal('modal1')">
+          <img src="logot.png" alt="Art Exhibition">
+          <div class="event-details">
+            <h2>TECHNEX</h2>
+            <p><strong>Date:</strong> March 8, 2025</p>
+            <p><strong>Location:</strong> AUDIOTORIUM</p>
+            <button class="btn">EXPLORE</button>
+          </div>
+        </div>
+      
+        <div class="event-card" onclick="openModal('modal2')">
+          <img src="logoi.png" alt="Art Exhibition">
+          <div class="event-details">
+            <h2>NAMOTSAV</h2>
+            <p><strong>Date:</strong> FEB 21, 2025</p>
+            <p><strong>Location:</strong>COLLEGE PREMISES</p>
+            <button class="btn">EXPLORE</button>
+          </div>
+        </div>
+      
+        <div class="event-card" onclick="openModal('modal3')">
+            <img src="logom.png" alt="Art Exhibition">
+            <div class="event-details">
+              <h2>MALHAR</h2>
+              <p><strong>Date:</strong> JAN 21, 2025</p>
+              <p><strong>Location:</strong> COLLEGE GROUND</p>
+              <button class="btn">EXPLORE</button>
+            </div>
+          </div>
+        
+
+          <div class="event-card" onclick="openModal('modal4')">
+            <img src="logon.png" alt="Art Exhibition">
+            <div class="event-details">
+              <h2>INVICTUS</h2>
+              <p><strong>Date:</strong> 10-12 March, 2025</p>
+              <p><strong>Location:</strong> NMIMS,INDORE</p>
+              <button class="btn">EXPLORE</button>
+            </div>
+          </div>
+        
+      
+        <!-- Modals -->
+        <div class="modal" id="modal1">
+            <div class="modal-content">
+              <h2>Art Exhibition</h2>
+              <div class="event-list">
+                <div class="event-card1" >
+                  <a href="event-r/event_register.html">
+                  <img src="event1.png" alt="Art Workshop">
+                  <div class="event-details">
+                    <h2>EXECUTE</h2>
+                    <p><strong>Date:</strong> March 08-10, 2025</p>
+                    </a>
+                  </div>
+                </div>
+                <div class="event-card1" >
+                  <a href="event-r/event_register.html">
+                  <img src="event2.png" alt="Music Jam">
+                  <div class="event-details">
+                    <h2>XENEX</h2>
+                    <p><strong>Date:</strong> March 08, 2025</p>
+                  </a>
+                  </div>
+                </div>
+             
+              <div class="event-card1" >
+                <a href="event-r/event_register.html">
+                <img src="event3.png" alt="Music Jam">
+                <div class="event-details">
+                  <h2>DIZNEX</h2>
+                  <p><strong>Date:</strong> March 08, 2025</p>
+                 </a>
+                </div>
+              </div>
+          
+           <div class="event-card1" >
+            <a href="event-r/event_register.html">
+                <img src="event4.png" alt="Music Jam">
+                <div class="event-details">
+                  <h2>ALGORUSH</h2>
+                  <p><strong>Date:</strong> March 08, 2025</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+              <button class="close-btn" onclick="closeModal('modal1')">Close</button>
+            </div>
+          </div>
+        
+          <!-- Repeat for all modals with corrected IDs -->
+          <div class="modal" id="modal2">
+            <div class="modal-content">
+              <h2>NAMOTSAV</h2>
+              <div class="event-list">
+                <div class="event-card1" >
+                  <a href="event-r/event_register.html">
+                  <img src="n1.png" alt="Art Workshop">
+                  <div class="event-details">
+                    <h2>TREASURE HUNT</h2>
+                    <p><strong>Date:</strong> FEB 21, 2025</p>
+                    </a>
+                  </div>
+                </div>
+                <div class="event-card1" >
+                  <a href="event-r/event_register.html">
+                  <img src="n2.png" alt="Music Jam">
+                  <div class="event-details">
+                    <h2>BOLLYWOOD BUZZ</h2>
+                    <p><strong>Date:</strong> FEB 21, 2025</p>
+                   </a> 
+                  </div>
+                </div>
+             
+              <div class="event-card1" >
+                <a href="event-r/event_register.html">
+                <img src="n3.png" alt="Music Jam">
+                <div class="event-details">
+                  <h2>PAINTING RELAY</h2>
+                  <p><strong>Date:</strong>FEB 21, 2025</p>
+                  </a>
+                </div>
+              </div>
+          
+           <div class="event-card1" >
+            <a href="event-r/event_register.html">
+                <img src="n4.png" alt="Music Jam">
+                <div class="event-details">
+                  <h2>KALYANA 3.O</h2>
+                  <p><strong>Date:</strong> FEB 21, 2025</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+              <button class="close-btn" onclick="closeModal('modal2')">Close</button>
+            </div>
+          </div>
+        
+
+          <div class="modal" id="modal3">
+            <div class="modal-content">
+              <h2>MALHAR</h2>
+              <div class="event-list">
+                <a href="event-r/event_register.html">
+                <div class="event-card1" >
+                  <img src="m1.png" alt="Art Workshop">
+                  <div class="event-details">
+                    <h2>BOLLYWOOD RW</h2>
+                    <p><strong>Date:</strong> JAN 21, 2025</p>
+                  </a>
+                  </div>
+                </div>
+                <div class="event-card1" >
+                  <img src="m2.png" alt="Music Jam">
+                  <a href="event-r/event_register.html"></a>
+                  <div class="event-details">
+                    <h2>TALENT HUNT</h2>
+                    <p><strong>Date:</strong>JAN 21, 2025</p>
+                  </a>
+                  </div>
+                </div>
+             
+              <div class="event-card1" > 
+                <a href="event-r/event_register.html">
+                <img src="m3.png" alt="Music Jam">
+                <div class="event-details">
+                  <h2>BATTLE OF BAND</h2>
+                  <p><strong>Date:</strong>JAN 21, 2025</p>
+                </a>
+                </div>
+              </div>
+            </div>
+              <button class="close-btn" onclick="closeModal('modal3')">Close</button>
+            </div>
+          </div>
+        
+
+
+
+          <div class="modal" id="modal4">
+            <div class="modal-content">
+                <h2>INVICTUS</h2>
+                <div id="countdown">
+                    <h2>Event Countdown</h2>
+                    <p id="timer"></p> <!-- Countdown will appear here -->
+                </div>
+                <button class="close-btn" onclick="closeModal('modal4')">Close</button>
+            </div>
+        </div>
+         
+        </main>
+
+
+
+
+        
+   <script src="event.js"></script>  
+</body>
+</html>

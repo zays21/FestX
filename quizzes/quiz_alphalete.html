@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>literature Fest Quiz</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1d4ed8, #000);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            color: grey; /* Set default text color to grey for all elements */
+        }
+        .quiz-container {
+            background: rgb(0, 0, 0);
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid darkblue;
+            box-shadow: 0px 0px 25px rgba(0, 0, 139, 0.8);
+            display: inline-block;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: grey; /* Explicitly set to grey */
+        }
+        .option {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid darkblue;
+            border-radius: 50px;
+            cursor: pointer;
+            background-color: black;
+            color: grey; /* Option text color set to grey */
+            font-size: 16px;
+            transition: 0.3s;
+            box-shadow: 0px 0px 10px rgba(0, 0, 139, 0.6);
+        }
+        .option:hover {
+            background-color: darkblue;
+            color: white; /* Hover effect overrides grey */
+        }
+        .correct {
+            background-color: green !important;
+            color: white !important; /* Correct answer overrides grey */
+        }
+        .wrong {
+            background-color: red !important;
+            color: white !important; /* Wrong answer overrides grey */
+        }
+        .hidden {
+            display: none;
+        }
+        #result { 
+            color: grey; /* Result messages set to grey */
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <h2 id="question">Loading question...</h2>
+        <button class="option" onclick="checkAnswer(0)"></button>
+        <button class="option" onclick="checkAnswer(1)"></button>
+        <button class="option" onclick="checkAnswer(2)"></button>
+        <button class="option" onclick="checkAnswer(3)"></button>
+        <p id="result"></p>
+        <button id="nextBtn" class="hidden" onclick="nextQuestion()">Next Question</button>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+    <script>
+      // Your Firebase config
+      const firebaseConfig = {
+            apiKey: "AIzaSyAIxakRGIrE4BGYbBx3Ed5MKwO9Qf2fegM",
+            authDomain: "festx-74486.firebaseapp.com",
+            projectId: "festx-74486",
+            storageBucket: "festx-74486.appspot.com",
+            messagingSenderId: "123462603681",
+            appId: "1:123462603681:web:58479c6ea27857818eb1e0",
+            measurementId: "G-VXB4BDNQMC"
+        };
+    
+      // Initialize Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+    </script>
+    <script>
+        const quizData = [
+            {
+                question: "What are the dates for the Invictus Sports Fest at NMIMS Indore?",
+                options: ["10th to 12th March", "11th to 13th March ✅", "12th to 14th March", "13th to 15th March"],
+                answer: 1
+            },
+            {
+                question: "Which club is responsible for organizing sports events at NMIMS Indore?",
+                options: ["Sangam", "Turing", "Alphalete ✅", "Dravya"],
+                answer: 2
+            },
+            {
+                question: "What type of events are scheduled for 11th March during Invictus?",
+                options: ["Outdoor sports events", "Indoor sports events ✅", "Cultural events", "Debate competitions"],
+                answer: 1
+            },
+            {
+                question: "What type of events are scheduled for 12th and 13th March during Invictus?",
+                options: ["Indoor sports events", "Cultural events", "Outdoor sports events ✅", "Technical workshops"],
+                answer: 2
+            },
+            {
+                question: "Name one of the schools at NMIMS Indore that participates in the Invictus Sports Fest.",
+                options: ["School of Technology Management and Engineering ✅", "School of Law", "School of Business", "School of Arts"],
+                answer: 0
+            },
+            {
+                question: "What is the primary focus of the Alphalete club at NMIMS Indore?",
+                options: ["Cultural events", "Technical workshops", "Sports ✅", "Social responsibility"],
+                answer: 2
+            },
+            {
+                question: "Which website can provide more information about the Invictus Sports Fest?",
+                options: ["NMIMS Official Website", "FestX Website ✅", "Sports Club Website", "Alphalete Club Website"],
+                answer: 1
+            },
+            {
+                question: "What is the Instagram handle for updates on Invictus Sports Fest?",
+                options: ["@nmims_indore", "@invictus_nmims ✅", "@alphalete_nmims", "@festx_nmims"],
+                answer: 1
+            },
+            {
+                question: "Which of the following is NOT a sport included in Invictus?",
+                options: ["Cricket", "Football", "Chess", "Debate ✅"],
+                answer: 3
+            },
+            {
+                question: "What is the main objective of the Invictus Sports Fest?",
+                options: ["Promote cultural activities", "Encourage sportsmanship and teamwork ✅", "Conduct technical workshops", "Raise social awareness"],
+                answer: 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let correctAnswersCount = 0;
+
+        function loadQuestion() {
+            const questionData = quizData[currentQuestionIndex];
+            document.getElementById("question").innerText = questionData.question;
+            const buttons = document.querySelectorAll(".option");
+            buttons.forEach((btn, index) => {
+                btn.innerText = questionData.options[index].replace("✅", ""); // Remove ✅ from display
+                btn.classList.remove("correct", "wrong");
+            });
+            document.getElementById("result").innerText = "";
+            document.getElementById("nextBtn").classList.add("hidden");
+        }
+
+        function checkAnswer(selectedIndex) {
+            const questionData = quizData[currentQuestionIndex];
+            const buttons = document.querySelectorAll(".option");
+
+            if (selectedIndex === questionData.answer) {
+                document.getElementById("result").innerText = "✅ Correct!";
+                buttons[selectedIndex].classList.add("correct");
+                correctAnswersCount++;
+            } else {
+                document.getElementById("result").innerText = "❌ Wrong! Correct answer: " + questionData.options[questionData.answer].replace("✅", "");
+                buttons[selectedIndex].classList.add("wrong");
+                buttons[questionData.answer].classList.add("correct");
+            }
+            document.getElementById("nextBtn").classList.remove("hidden");
+        }
+        function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < quizData.length) {
+        loadQuestion();
+    } else {
+        const user = firebase.auth().currentUser; // Get logged-in user
+        if (user) {
+            db.collection("quizScores").doc(user.email).set({
+                email: user.email,
+                score: correctAnswersCount,
+                total: quizData.length,
+                percentage: ((correctAnswersCount / quizData.length) * 100).toFixed(1),
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => console.log("Score saved successfully"))
+            .catch(error => console.error("Error saving score:", error));
+        }
+
+        document.querySelector(".quiz-container").innerHTML = `
+            <h2>🎉 Quiz Completed!</h2>
+            <div class="scoreboard">
+                <p>You got <strong>${correctAnswersCount}</strong> out of <strong>${quizData.length}</strong> questions correct!</p>
+                <p>Your score: <strong>${(correctAnswersCount / quizData.length * 100).toFixed(1)}%</strong></p>
+                <p><a href="index.html" style="color: #2b6cb0;">Back to Quiz Hub</a></p>
+            </div>
+        `;
+    }
+}
+
+        loadQuestion();
+    </script>
+
+</body>
+</html>

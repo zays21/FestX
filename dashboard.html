@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FestX - User Dashboard</title>
+    <<link rel="icon" type="image/svg" href="/asset/2.svg">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="asset/1.png" alt="FestX Logo" class="logo-icon">
+            </a>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links">
+                <a href="Events/event.html">Events</a>
+                <a href="/quizzes">Quizzes</a>
+                <div class="notification-container">
+                    <div class="notification-bell">🔔
+                        <div class="notification-dropdown" id="notificationDropdown">
+                            <p>No new notifications</p>
+                        </div>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="btn btn-danger">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-container">
+        <div class="tech-overlay"></div>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="profile-card">
+                <div class="profile-avatar"></div>
+                <h3 id="userName" class="glitch-text">Loading...</h3>
+                <p>UEM Jaipur Student</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="/dashboard.html" class="active">Dashboard</a>
+                <a href="/Events/event.html">My Events</a>
+                <a href="/settings">Settings</a>
+                <a href="#" id="logoutLink">Logout</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="dashboard-card">
+                <h2 class="glitch-text">Welcome Back!</h2>
+                <p>Get ready for FestX 2025 - Your adventure awaits!</p>
+                <div class="quick-actions">
+                    <button class="btn btn-primary neon-glow">Register for Event</button>
+                    <button class="btn btn-outline">Join a Team</button>
+                    <button class="btn btn-outline">View Schedule</button>
+                </div>
+            </section>
+
+            <section class="dashboard-card">
+                <h2 class="glitch-text">My Events</h2>
+                <div class="events-list" id="eventsList"></div>
+            </section>
+
+            <section class="dashboard-card">
+                <h2 class="glitch-text">Notifications</h2>
+                <div class="notifications-list" id="notificationsList"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Firebase SDK and Dashboard Logic -->
+    <script type="module">
+        // Load Firebase SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAIxakRGIrE4BGYbBx3Ed5MKwO9Qf2fegM",
+            authDomain: "festx-74486.firebaseapp.com",
+            projectId: "festx-74486",
+            storageBucket: "festx-74486.appspot.com",
+            messagingSenderId: "123462603681",
+            appId: "1:123462603681:web:58479c6ea27857818eb1e0",
+            measurementId: "G-VXB4BDNQMC"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Check auth state and update UI
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById("userName").textContent = user.displayName || user.email.split('@')[0];
+            } else {
+                window.location.href = "login.html"; // Adjusted path
+            }
+        });
+
+        // Logout function
+        function logoutUser() {
+            signOut(auth).then(() => {
+                alert("🚀 Logged out successfully!");
+                window.location.href = "index.html";
+            }).catch((error) => {
+                console.error("❌ Logout Error:", error.message);
+                alert("❌ Logout failed: " + error.message);
+            });
+        }
+
+        document.getElementById("logoutBtn").addEventListener("click", logoutUser);
+        document.getElementById("logoutLink").addEventListener("click", logoutUser);
+
+        // Fetch Announcements in Real-Time
+        const notificationDropdown = document.getElementById("notificationDropdown");
+        const notificationsList = document.getElementById("notificationsList");
+
+        function loadNotifications() {
+            const announcementsRef = collection(db, "announcements");
+            const q = query(announcementsRef, orderBy("timestamp", "desc"));
+
+            onSnapshot(q, (snapshot) => {
+                notificationDropdown.innerHTML = ""; // Clear dropdown
+                notificationsList.innerHTML = "";   // Clear dashboard list
+                if (snapshot.empty) {
+                    notificationDropdown.innerHTML = "<p>No new notifications.</p>";
+                    notificationsList.innerHTML = "<p>No new notifications.</p>";
+                    return;
+                }
+
+                snapshot.forEach((doc) => {
+                    let data = doc.data();
+                    let item = document.createElement("div");
+                    item.classList.add("notification-item");
+                    item.innerHTML = `
+                        <p><strong>${data.title}</strong>: ${data.message}</p>
+                        <small>${new Date(data.timestamp.toMillis()).toLocaleString()}</small>
+                    `;
+
+                    // Append to both dropdown and dashboard list
+                    notificationDropdown.appendChild(item.cloneNode(true));
+                    notificationsList.appendChild(item);
+                });
+            }, (error) => {
+                console.error("❌ Error fetching notifications:", error);
+                notificationDropdown.innerHTML = "<p>❌ Error loading notifications.</p>";
+                notificationsList.innerHTML = "<p>❌ Error loading notifications.</p>";
+            });
+        }
+
+        // Call function to load notifications
+        loadNotifications();
+    </script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

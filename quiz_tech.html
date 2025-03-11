@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>enieme Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1d4ed8, #000);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        .quiz-container {
+            background: rgb(0, 0, 0);
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid darkblue;
+            box-shadow: 0px 0px 25px rgba(0, 0, 139, 0.8);
+            display: inline-block;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: grey; /* ✅ Changed question text to grey */
+        }
+        .option {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid darkblue;
+            border-radius: 50px;
+            cursor: pointer;
+            background-color: black;
+            color: grey;
+            font-size: 16px;
+            transition: 0.3s;
+            box-shadow: 0px 0px 10px rgba(0, 0, 139, 0.6);
+        }
+        .option:hover {
+            background-color: darkblue;
+            color: white;
+        }
+        .correct {
+            background-color: green !important;
+            color: white !important;
+        }
+        .wrong {
+            background-color: red !important;
+            color: white !important;
+        }
+        .hidden {
+            display: none;
+        }
+        #result { 
+            color: grey; /* ✅ Changed correct/incorrect message text to grey */
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <h2 id="question">Loading question...</h2>
+        <button class="option" onclick="checkAnswer(0)"></button>
+        <button class="option" onclick="checkAnswer(1)"></button>
+        <button class="option" onclick="checkAnswer(2)"></button>
+        <button class="option" onclick="checkAnswer(3)"></button>
+        <p id="result"></p>
+        <button id="nextBtn" class="hidden" onclick="nextQuestion()">Next Question</button>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "What was the first ever high-level programming language?",
+                options: ["Fortran", "C", "Python", "Java"],
+                answer: 0
+            },
+            {
+                question: "What does API stand for?",
+                options: ["Application Programming Interface", "Automated Program Integration", "Advanced Processing Input", "Application Port Interface"],
+                answer: 0
+            },
+            {
+                question: "What is considered the foundation language for all programming languages?",
+                options: ["Assembly", "C", "Python", "JavaScript"],
+                answer: 1
+            },
+            {
+                question: "What was the world’s first GPU?",
+                options: ["NVIDIA GeForce 256", "Radeon RX 580", "Intel Iris", "GTX 1050"],
+                answer: 0
+            },
+            {
+                question: "What was the world’s first purely OOP language?",
+                options: ["Simula", "Smalltalk", "Java", "C++"],
+                answer: 1
+            },
+            {
+                question: "What was the first interface used to connect a mouse and keyboard?",
+                options: ["PS/2", "USB", "Serial Port", "Bluetooth"],
+                answer: 0
+            },
+            {
+                question: "What does the following code print?\nconsole.log(typeof [])",
+                options: ["Array", "Object", "Undefined", "Function"],
+                answer: 1
+            },
+            {
+                question: "What keyword is used to avoid the condition of ‘fallthrough’ in switch cases?",
+                options: ["exit", "stop", "break", "return"],
+                answer: 2
+            },
+            {
+                question: "What is the most prominent language used in Quantum Computing?",
+                options: ["C++", "Python", "Qiskit", "Java"],
+                answer: 2
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let correctAnswersCount = 0; 
+
+        function loadQuestion() {
+            const questionData = quizData[currentQuestionIndex];
+            document.getElementById("question").innerText = questionData.question;
+            const buttons = document.querySelectorAll(".option");
+            buttons.forEach((btn, index) => {
+                btn.innerText = questionData.options[index];
+                btn.classList.remove("correct", "wrong");
+            });
+            document.getElementById("result").innerText = "";
+            document.getElementById("nextBtn").classList.add("hidden");
+        }
+
+        function checkAnswer(selectedIndex) {
+            const questionData = quizData[currentQuestionIndex];
+            const buttons = document.querySelectorAll(".option");
+
+            if (selectedIndex === questionData.answer) {
+                document.getElementById("result").innerText = "✅ Correct!";
+                buttons[selectedIndex].classList.add("correct");
+                correctAnswersCount++;
+            } else {
+                document.getElementById("result").innerText = "❌ Wrong! Correct answer: " + questionData.options[questionData.answer];
+                buttons[selectedIndex].classList.add("wrong");
+                buttons[questionData.answer].classList.add("correct");
+            }
+            document.getElementById("nextBtn").classList.remove("hidden");
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                document.querySelector(".quiz-container").innerHTML = `<h2>🎉 Quiz Completed!</h2>
+                <p>You got <strong>${correctAnswersCount}</strong> out of <strong>${quizData.length}</strong> questions correct!</p>
+                <p>Refresh to try again.</p>`;
+            }
+        }
+
+        loadQuestion();
+    </script>
+
+</body>
+</html>

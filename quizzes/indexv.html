@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Hub</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1d4ed8, #000);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        .container {
+            text-align: center;
+            color: white;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .quiz-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .quiz-card {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 15px;
+            width: 200px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid #2b6cb0;
+            box-shadow: 0 0 15px rgba(0, 0, 139, 0.5);
+        }
+        .quiz-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 0, 139, 0.8);
+            background: #2b6cb0;
+        }
+        .quiz-card h3 {
+            color: #e5e7eb;
+            margin: 10px 0;
+            font-size: 20px;
+        }
+        .quiz-card p {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Select a Quiz</h1>
+        <div class="quiz-options">
+            <a href="/quizzes/quiz_malhaar.html" style="text-decoration: none;">
+                <div class="quiz-card">
+                    <h3>Lit Fest Quiz</h3>
+                    <p>Test your knowledge about Lit Fest at UEM!</p>
+                </div>
+            </a>
+            <a href="/quizzes/quiz_nmotsav.html" style="text-decoration: none;">
+                <div class="quiz-card">
+                    <h3>Arena Fest Quiz</h3>
+                    <p>Explore events and details of Arena Fest!</p>
+                </div>
+            </a>
+            <a href="/quizzes/quiz_technex.html" style="text-decoration: none;">
+                <div class="quiz-card">
+                    <h3>Programming Quiz</h3>
+                    <p>Challenge yourself with programming concepts!</p>
+                </div>
+            </a>
+            <a href="/quizzes/quiz_alphalete.html" style="text-decoration: none;">
+                <div class="quiz-card">
+                    <h3>Sangram Sports Fest Quiz</h3>
+                    <p>Test your knowledge about Sangram Sports Fest at UEM!</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

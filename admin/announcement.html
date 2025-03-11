@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements</title>
+    <link rel="icon" type="image/svg" href="/asset/2.svg">
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .announcement { border: 1px solid #ddd; padding: 15px; margin: 10px auto; width: 80%; border-radius: 8px; background: #f9f9f9; }
+    </style>
+</head>
+<body>
+
+    <h2>Latest Announcements</h2>
+    <div id="announcements">Loading announcements...</div>
+
+    <!-- ✅ Load Firebase (COMPAT VERSION) -->
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        console.log("Page Loaded - Initializing Firebase...");
+
+        // ✅ Replace with your Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAIxakRGIrE4BGYbBx3Ed5MKwO9Qf2fegM",
+            authDomain: "festx-74486.firebaseapp.com",
+            projectId: "festx-74486",
+            storageBucket: "festx-74486.appspot.com",
+            messagingSenderId: "123462603681",
+            appId: "1:123462603681:web:58479c6ea27857818eb1e0",
+            measurementId: "G-VXB4BDNQMC"
+        };
+
+        // ✅ Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        console.log("✅ Firebase Initialized Successfully!");
+
+        function loadAnnouncements() {
+            const announcementsDiv = document.getElementById("announcements");
+
+            // ✅ Fetch Announcements, Order by Latest
+            db.collection("announcements").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+                announcementsDiv.innerHTML = ""; // Clear previous data
+                if (snapshot.empty) {
+                    announcementsDiv.innerHTML = "<p>No announcements yet.</p>";
+                    return;
+                }
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    announcementsDiv.innerHTML += `
+                        <div class="announcement">
+                            <h3>${data.title}</h3>
+                            <p>${data.message}</p>
+                        </div>
+                    `;
+                });
+            }, error => {
+                console.error("❌ Error fetching announcements:", error);
+                announcementsDiv.innerHTML = "<p>❌ Error loading announcements.</p>";
+            });
+        }
+
+        // ✅ Load Announcements when Page Loads
+        loadAnnouncements();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>enieme Quiz</title>
+    <link rel="icon" type="image/svg" href="/asset/1.png">
+    <!-- Favicon -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1d4ed8, #000);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        .quiz-container {
+            background: rgb(0, 0, 0);
+            padding: 20px;
+            border-radius: 20px;
+            border: 2px solid darkblue;
+            box-shadow: 0px 0px 25px rgba(0, 0, 139, 0.8);
+            display: inline-block;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: grey;
+        }
+        .option {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid darkblue;
+            border-radius: 50px;
+            cursor: pointer;
+            background-color: black;
+            color: grey;
+            font-size: 16px;
+            transition: 0.3s;
+            box-shadow: 0px 0px 10px rgba(0, 0, 139, 0.6);
+        }
+        .option:hover {
+            background-color: darkblue;
+            color: white;
+        }
+        .correct {
+            background-color: green !important;
+            color: white !important;
+        }
+        .wrong {
+            background-color: red !important;
+            color: white !important;
+        }
+        .hidden {
+            display: none;
+        }
+        #result { 
+            color: grey;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <h2 id="question">Loading question...</h2>
+        <button class="option" onclick="checkAnswer(0)"></button>
+        <button class="option" onclick="checkAnswer(1)"></button>
+        <button class="option" onclick="checkAnswer(2)"></button>
+        <button class="option" onclick="checkAnswer(3)"></button>
+        <p id="result"></p>
+        <button id="nextBtn" class="hidden" onclick="nextQuestion()">Next Question</button>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "What are the dates for NMotsava Fest at NMIMS Indore?",
+                options: ["20th to 22nd February", "21st to 23rd February", "22nd to 24th February", "23rd to 25th February"],
+                answer: 1
+            },
+            {
+                question: "Which club is responsible for organizing NMotsava Fest?",
+                options: ["Turing", "Sangam", "Alphalete", "Dravya"],
+                answer: 1
+            },
+            {
+                question: "What event is scheduled for 21st February at 12 PM during NMotsava?",
+                options: ["Bollywood Buzz", "Painting Relay", "Treasure Hunt", "Food Prenuer"],
+                answer: 2
+            },
+            {
+                question: "What time is the Food Prenuer event scheduled for on 21st February?",
+                options: ["5 PM", "6 PM", "7 PM", "8 PM"],
+                answer: 1
+            },
+            {
+                question: "What type of event is Kalyana 3.0 scheduled for 22nd February?",
+                options: ["Debate", "Fashion Show", "Painting Competition", "Quiz"],
+                answer: 1
+            },
+            {
+                question: "At what time is the Painting Relay event scheduled for on 22nd February?",
+                options: ["10 AM", "11 AM", "12 PM", "1 PM"],
+                answer: 1
+            },
+            {
+                question: "What is the name of the Bollywood-themed event on 23rd February?",
+                options: ["Bollywood Ramp Walk", "Bollywood Buzz", "Bollywood Night", "Bollywood Fiesta"],
+                answer: 1
+            },
+            {
+                question: "Which club specializes in cultural activities at NMIMS Indore?",
+                options: ["Turing", "Sangam", "Alphalete", "Dravya"],
+                answer: 1
+            },
+            {
+                question: "Which platform can provide more information about NMotsava?",
+                options: ["FestX website", "Instagram handle of Sangam Committee", "NMIMS official website", "Facebook page"],
+                answer: 1
+            },
+            {
+                question: "What is the focus of NMotsava Fest?",
+                options: ["Sports", "Cultural Events", "Technical Workshops", "Legal Awareness"],
+                answer: 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let correctAnswersCount = 0;
+
+        function loadQuestion() {
+            const questionData = quizData[currentQuestionIndex];
+            document.getElementById("question").innerText = questionData.question;
+            const buttons = document.querySelectorAll(".option");
+            buttons.forEach((btn, index) => {
+                btn.innerText = questionData.options[index];
+                btn.classList.remove("correct", "wrong");
+            });
+            document.getElementById("result").innerText = "";
+            document.getElementById("nextBtn").classList.add("hidden");
+        }
+
+        function checkAnswer(selectedIndex) {
+            const questionData = quizData[currentQuestionIndex];
+            const buttons = document.querySelectorAll(".option");
+
+            if (selectedIndex === questionData.answer) {
+                document.getElementById("result").innerText = "✅ Correct!";
+                buttons[selectedIndex].classList.add("correct");
+                correctAnswersCount++;
+            } else {
+                document.getElementById("result").innerText = "❌ Wrong! Correct answer: " + questionData.options[questionData.answer];
+                buttons[selectedIndex].classList.add("wrong");
+                buttons[questionData.answer].classList.add("correct");
+            }
+            document.getElementById("nextBtn").classList.remove("hidden");
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                document.querySelector(".quiz-container").innerHTML = `<h2>🎉 Quiz Completed!</h2>
+                <p>You got <strong>${correctAnswersCount}</strong> out of <strong>${quizData.length}</strong> questions correct!</p>
+                <p>Refresh to try again.</p>`;
+            }
+        }
+
+        loadQuestion();
+    </script>
+
+</body>
+</html>
